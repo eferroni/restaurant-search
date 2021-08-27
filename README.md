@@ -84,4 +84,4 @@ This command will start the server and the project will be accessed throw:
 http://localhost:3000/
 ```
 
-Once you access, it will automatically verify if the detas are empty, and fill it with the data from csv if necessary.
+Once you access, it will automatically verify if the database are empty, and fill it with the data from csv if necessary.
