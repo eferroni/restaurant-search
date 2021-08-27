@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Container, Button, Grid, TextField, Slider, Typography } from '@material-ui/core';
+import { Container, Button, Grid, TextField, Slider, Typography, CircularProgress } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -63,9 +63,11 @@ function SearchScreen({history}){
             if (error.response) {
               setError(error.response.data);
             }
+        })
+        .finally(function(){
+            setLoading(false);
         });
 
-        setLoading(false);
     };
 
     return (
@@ -122,31 +124,32 @@ function SearchScreen({history}){
                 </Grid>
 
                 {/*TABLE ROW*/}
-                <Grid item xs={12}>
-                    {loading && 'Loading..'}
+                <Grid item xs={12} style={{textAlign: 'center'}}>
                     {error && <Alert severity="error">{error}</Alert>}
-                    <Table style={{width: '100%'}}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell style={{width: '30%'}}>NAME</TableCell>
-                                <TableCell style={{width: '15%'}}>RATING</TableCell>
-                                <TableCell style={{width: '15%'}}>DISTANCE</TableCell>
-                                <TableCell style={{width: '15%'}}>PRICE</TableCell>
-                                <TableCell style={{width: '25%'}}>CUISINE</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {restaurants?.map(item => (
-                            <TableRow key={item.id}>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>{item.customer_rating}</TableCell>
-                                <TableCell>{item.distance}</TableCell>
-                                <TableCell>{item.price}</TableCell>
-                                <TableCell>{item.cuisine.name}</TableCell>
-                            </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    {loading ? <CircularProgress /> : (
+                        <Table style={{width: '100%'}}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell style={{width: '30%'}}>NAME</TableCell>
+                                    <TableCell style={{width: '15%'}}>RATING</TableCell>
+                                    <TableCell style={{width: '15%'}}>DISTANCE</TableCell>
+                                    <TableCell style={{width: '15%'}}>PRICE</TableCell>
+                                    <TableCell style={{width: '25%'}}>CUISINE</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {restaurants?.map(item => (
+                                <TableRow key={item.id}>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.customer_rating}</TableCell>
+                                    <TableCell>{item.distance}</TableCell>
+                                    <TableCell>{item.price}</TableCell>
+                                    <TableCell>{item.cuisine.name}</TableCell>
+                                </TableRow>
+                                ))}
+                            </TableBody>
+                     </Table>
+                    )}
                 </Grid>
             </Grid>
         </Container>

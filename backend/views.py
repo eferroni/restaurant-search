@@ -1,9 +1,8 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Cuisine, Restaurant
 from rest_framework import status
-from .serializers import RestaurantSerializer, CuisineSerializer
+from .serializers import RestaurantSerializer
 import pandas as pd
 
 
@@ -57,7 +56,7 @@ def initdata(request):
     :return: initialized, if no error occurs
     """
     try:
-        if not Cuisine.objects.all():
+        if not Cuisine.objects.first():
             new_cuisines = pd.read_csv("backend/cuisines.csv")
             row_iter = new_cuisines.iterrows()
             objs = []
@@ -65,7 +64,7 @@ def initdata(request):
                 objs.append(Cuisine(id=row["id"], name=row["name"]))
             Cuisine.objects.bulk_create(objs)
 
-        if not Restaurant.objects.all():
+        if not Restaurant.objects.first():
             new_restaurants = pd.read_csv("backend/restaurants.csv")
             row_iter = new_restaurants.iterrows()
             objs = []
